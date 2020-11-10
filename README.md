@@ -34,11 +34,18 @@ Ex Libris Symbol
 - animals?
   - owl
   - dog
+- family animals:
+ - orcas
+ - lions
+ - orangutans
+ - chimpanzies
+ - elephants
+ - penguins
 - something that represents Marta and Romek
- - teddy bear
- - smile
- - rattle
- - ponytail
+ - ~~teddy bear~~
+ - ~~smile~~
+ - ~~rattle~~
+ - ~~ponytail~~
 - general values
  - knowledge
  - books
@@ -75,15 +82,41 @@ Workflow #4
  ---
 
 # **TODO** LIST
-- [ ] ex libris draft
+- [ ] ex libris 
+ - [X] brain storming
+ - [ ] pencil drafts 
+ - [ ] brain storming: choosing best
+ - [ ] raw Inkscape version of best 3 
+- [ ] BiBTeX to SQL converter
+ - [X] library for conversion (pybtex)
+ - [X] authors
+ - [X] books: first step
+ - [ ] books: foreign indices
 - [ ] QR generator (generate whenever a new item is added to **books** table)
+ - [X] draft of generator
+ - [ ] function **make_qr(url_text,path/filename)**
+ - [ ] function **update_qrs(dir,?)** that reads all the qrs from *dir* and changes them to the desired new format (update links or change the size of qrs). Maybe update should be done based on database content 
+ - [ ] use *qrcode* library in more sophisticated way
 - [ ] Database
- - [ ] code the structure
- - [ ] code test cases (use some real books on the shelf)
- - [ ] managing entries:
+ - [X] code the structure
+ - [ ] add table with tag names to the structure
+ - [ ] add relation table for tags and books
+ - [ ] managing entries (write functions):
    - [ ] adding
    - [ ] removing
    - [ ] updating
+ - [ ] code test cases (use some real books on the shelf)
+   - [X] code people (owners and borrowers)
+   - [ ] code books 
+   - [ ] real testing: code actions 
+     - [ ] adding books to library
+     - [ ] adding new people
+     - [ ] adding borrowing books
+     - [ ] updating books
+     - [ ] updating borrowers
+     - [ ] updating authors
+     - [ ] adding authors to book
+     - [ ] destroying books (lost flag=1, removing relations)
  - [ ] dumping database for Git purposes (anonimizing the outuput)
 - [ ] GUI
  - [ ] code basic view
@@ -131,14 +164,20 @@ what should be given under the link where QR code directs
 - author (what with many authors or encyclopedias)
 - language
 - destroyed/given_away/lost
-- ? publisher?
-- ? lubimyczytac.pl link?
-- ? owner?
+- publisher
+- lubimyczytac.pl link
+- owner
+- bookcase (name bookcases after continents Europe, America, etc.)
+- shelf (name after cities or countries: Amsterdam, Wiedeń, etc.)
 
 *author*
 - id
 - first name
 - last name
+
+*tag*
+- id
+- name
 
 
 *borrower*
@@ -148,6 +187,14 @@ what should be given under the link where QR code directs
 - email
 - phone number
 
+*owner*
+- id
+- first name
+- last name
+- email
+- phone number
+
+? scalić *borrower* i *owner*?
 
 ### Relations 
 *borrowing* (book-borrower)
@@ -161,6 +208,12 @@ what should be given under the link where QR code directs
 - id
 - id_book
 - id_author
+
+*hastag* (book-tag)
+- id
+- id_book
+- id_tag
+
 
 
 
