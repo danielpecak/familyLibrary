@@ -60,7 +60,7 @@ Ex Libris Symbol
 Here the timetable is shown. Within a workflow, the things should be done in order. The workflows are not dependent on each other (at least in the beginning).
 
 Workflow #1
-1. database structure in SQL
+1. ~~database structure in SQL~~
 2. managing SQLite with python script 
 3. fill in the database (partially)
 4. ...

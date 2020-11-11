@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# Utils for managing database in encapsulated form
+
 import sqlite3
 import os 
 import sys
+import logger 
 
 DB_NAME='example.db'
 INIT_SQL='DBstructure.sql'
@@ -15,21 +18,25 @@ def connection():
     conn.execute('PRAGMA foreign_keys = ON;')
     conn.commit()
     try:
-        # print("# Connected to database: %s"%(DB_NAME))
+        logger.add("Connected to database: %s"%(DB_NAME),4)
         return conn
     except sqlite3.Error as e:
         pass
-        # print("I am unable to connect to the database: %s" % e.args[0])
+        logger.add("I am unable to connect to the database: %s" % e.args[0],1)
 
 def add_author(fname,lname):
     """Description """
     c=connection()
     cur=c.cursor()
-    cur.execute('INSERT OR IGNORE INTO author(first_name,last_name) VALUES(?,?);',(fname,lname))
+    try:
+        cur.execute('INSERT  INTO author(first_name,last_name) VALUES(?,?);',(fname,lname))
+    except sqlite3.Error as er:
+        logger.add('SQLite error: %s' % (' '.join(er.args)),1)
+
     if(cur.rowcount==1):
-        print("# Author '%s %s' added to database %s"%(fname,lname,DB_NAME))
+        logger.add("Author '%s %s' added to database %s"%(fname,lname,DB_NAME),3)
     else:
-        print("# Author '%s %s' already exists in the database %s"%(fname,lname,DB_NAME))
+        logger.add("Author '%s %s' already exists in the database %s"%(fname,lname,DB_NAME),3)
     c.commit()    
     c.close()
     return cur.lastrowid
@@ -38,11 +45,15 @@ def add_tag(tag):
     """Description """
     c=connection()
     cur=c.cursor()
-    cur.execute('INSERT OR IGNORE INTO tag(name) VALUES(?);',(tag,))
+    try:
+        cur.execute('INSERT  INTO tag(name) VALUES(?);',(tag,))
+    except sqlite3.Error as er:
+        logger.add('SQLite error: %s' % (' '.join(er.args)),1)
+
     if(cur.rowcount==1):
-        print("# Tag '%s' added to database %s"%(tag,DB_NAME))
+        logger.add("Tag '%s' added to database %s"%(tag,DB_NAME),3)
     else:
-        print("# Tag '%s' already exists in the database %s"%(tag,DB_NAME))
+        logger.add("Tag '%s' already exists in the database %s"%(tag,DB_NAME),2)
     c.commit()    
     c.close()
     return cur.lastrowid
@@ -51,11 +62,15 @@ def add_person(fname,lname,email=None,phone=None):
     """Description """
     c=connection()
     cur=c.cursor()
-    cur.execute('INSERT OR IGNORE INTO people(first_name,last_name,email,phone) VALUES(?,?,?,?);',(fname,lname,email,phone))
+    try:
+        cur.execute('INSERT  INTO people(first_name,last_name,email,phone) VALUES(?,?,?,?);',(fname,lname,email,phone))
+    except sqlite3.Error as er:
+        logger.add('SQLite error: %s' % (' '.join(er.args)),1)
+
     if(cur.rowcount==1):
-        print("# Person '%s %s (Email:%s, Phone:%s)' added to database %s"%(fname,lname,email,phone,DB_NAME))
+        logger.add("Person '%s %s (Email:%s, Phone:%s)' added to database %s"%(fname,lname,email,phone,DB_NAME),3)
     else:
-        print("# Person '%s %s (Email:%s, Phone:%s)' already exists in the database %s"%(fname,lname,email,phone,DB_NAME))
+        logger.add("Person '%s %s (Email:%s, Phone:%s)' already exists in the database %s"%(fname,lname,email,phone,DB_NAME),2)
     c.commit()    
     c.close()
     return cur.lastrowid
@@ -79,21 +94,31 @@ def add_book(isbn,title,fauthor,lauthor,fowner,lowner,url=None,publisher=None,la
         ownerID = add_person(fowner,lowner)
     else:
         ownerID = l[0][0]
-        
-    cur.execute('INSERT OR IGNORE INTO book(isbn,title,url,language,publisher,bookcase,shelf) VALUES(?,?,?,?,?,?,?);',(isbn,title,url,language,publisher,bookcase,shelf))
+    
+    try:    
+        cur.execute('INSERT  INTO book(isbn,title,url,language,publisher,bookcase,shelf) VALUES(?,?,?,?,?,?,?);',(isbn,title,url,language,publisher,bookcase,shelf))
+    except sqlite3.Error as er:
+        logger.add('SQLite error: %s' % (' '.join(er.args)),1)
     bookID=cur.lastrowid
     
-    if(bookID!=0):
+    if((bookID!=0) and (bookID is not None)):
+        print(2)
         # TODO add INSERT OR IGNORE
-        cur.execute('INSERT INTO book_R_author(id_book,id_author) VALUES(?,?);', (bookID,authorID))
+        try:
+            cur.execute('INSERT INTO book_R_author(id_book,id_author) VALUES(?,?);', (bookID,authorID))
+        except sqlite3.Error as er:
+            logger.add('SQLite error: %s' % (' '.join(er.args)),1)
 
         # TODO add INSERT OR IGNORE
-        cur.execute('INSERT INTO ownership(id_book,id_people) VALUES(?,?);', (bookID,ownerID))
-    
+        try:
+            cur.execute('INSERT INTO ownership(id_book,id_people) VALUES(?,?);', (bookID,ownerID))
+        except sqlite3.Error as er:
+            logger.add('SQLite error: %s' % (' '.join(er.args)),1)
+
     if(cur.rowcount==1):
-        print("# Book '%s' added to database %s"%(title,DB_NAME))
+        logger.add("Book '%s' added to database %s"%(title,DB_NAME),3)
     else:
-        print("# Book '%s' already exists in the  database %s"%(title,DB_NAME))
+        logger.add("Book '%s' already exists in the  database %s"%(title,DB_NAME),2)
     c.commit()    
     c.close()
 
@@ -110,11 +135,15 @@ def add_tag2book(tagID,bookID):
     tagEXIST=temp[0]
     tagNAME=temp[1]
     if(tagEXIST*bookEXIST==1):
-        cur.execute('INSERT OR IGNORE INTO book_R_tag(id_book,id_tag) VALUES(?,?);',(bookID,tagID))
+        try:
+            cur.execute('INSERT  INTO book_R_tag(id_book,id_tag) VALUES(?,?);',(bookID,tagID))
+        except sqlite3.Error as er:
+            logger.add('SQLite error: %s' % (' '.join(er.args)),1)
+
     if(cur.rowcount==1):
-        print("# Tag '%s' added to the book '%s'"%(tagNAME,bookTITLE))
+        logger.add("Tag '%s' added to the book '%s'"%(tagNAME,bookTITLE),3)
     else:
-        print("# Tag '%s' already is connected to the book  '%s'"%(tagNAME,bookTITLE))
+        logger.add("Tag '%s' already is connected to the book  '%s'"%(tagNAME,bookTITLE),2)
     c.commit()    
     c.close()
     return cur.lastrowid
@@ -124,10 +153,17 @@ def borrow(bookID,personID,start=None):
     c=connection()
     cur=c.cursor()
     if(start):
-        cur.execute('INSERT OR IGNORE INTO borrowings(id_book,id_people,start_date) VALUES(?,?,?);',(bookID,personID,start))
+        try:
+            cur.execute('INSERT  INTO borrowings(id_book,id_people,start_date) VALUES(?,?,?);',(bookID,personID,start))
+        except sqlite3.Error as er:
+            logger.add('SQLite error: %s' % (' '.join(er.args)),1)
     else:
-        cur.execute('INSERT OR IGNORE INTO borrowings(id_book,id_people) VALUES(?,?);',(bookID,personID))
-    print("# The book has been borrowed")
+        try:
+            cur.execute('INSERT  INTO borrowings(id_book,id_people) VALUES(?,?);',(bookID,personID))
+        except sqlite3.Error as er:
+            logger.add('SQLite error: %s' % (' '.join(er.args)),1)
+
+    logger.add("The book has been borrowed",3)
     c.commit()    
     c.close()
 
@@ -140,7 +176,7 @@ def returnbook(bookID,end=None):
     else:
         cur.execute('UPDATE borrowings SET end_date=date("now") WHERE id_book=? AND end_date IS NULL;',(bookID,))
     c.commit()    
-    print("# The book has been returned.")
+    logger.add("The book has been returned.",3)
     c.close()
 
 
