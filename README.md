@@ -1,5 +1,7 @@
 # familyLibrary
-Simple database manager to organize a small (family size) set of books, including the history of borrowing.
+# familyLibrary
+
+log items that has been ignored including the history of borrowing.
 
 
 ---
@@ -87,11 +89,12 @@ Workflow #4
  - [ ] pencil drafts 
  - [ ] brain storming: choosing best
  - [ ] raw Inkscape version of best 3 
-- [ ] BiBTeX to SQL converter
+ - [ ] final choice
+- [X] BiBTeX to SQL converter
  - [X] library for conversion (pybtex)
  - [X] authors
  - [X] books: first step
- - [ ] books: foreign indices
+ - [X] books: foreign indices
 - [ ] QR generator (generate whenever a new item is added to **books** table)
  - [X] draft of generator
  - [ ] function **make_qr(url_text,path/filename)**
@@ -99,19 +102,19 @@ Workflow #4
  - [ ] use *qrcode* library in more sophisticated way
 - [ ] Database
  - [X] code the structure
- - [ ] add table with tag names to the structure
- - [ ] add relation table for tags and books
+ - [X] add table with tag names to the structure
+ - [X] add relation table for tags and books
  - [ ] managing entries (write functions):
-   - [ ] adding
+   - [X] adding
    - [ ] removing
    - [ ] updating
  - [ ] code test cases (use some real books on the shelf)
    - [X] code people (owners and borrowers)
    - [ ] code books 
    - [ ] real testing: code actions 
-     - [ ] adding books to library
-     - [ ] adding new people
-     - [ ] adding borrowing books
+     - [X] adding books to library
+     - [X] adding new people
+     - [X] adding borrowing books
      - [ ] updating books
      - [ ] updating borrowers
      - [ ] updating authors
@@ -129,7 +132,13 @@ Workflow #4
  - [ ] managing borrowings
    - [ ] borrower borrows book
    - [ ] book is returned
-  
+   
+---
+
+# **TODO2** LIST: things for later
+- [ ] adding books: author and owner should be a list
+- [ ] log items that has been ignored
+
 ---
 
 ## QR generator
