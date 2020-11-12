@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Functions for creaging a LOG file
+# Functions for creating a LOG file
 from datetime import datetime
 
 LOG_FILENAME = 'library.log'

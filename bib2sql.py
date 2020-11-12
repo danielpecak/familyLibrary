@@ -48,30 +48,64 @@ for id in bibdata.entries:
 
 conn.commit()
 conn.close()
-add_tag('testowy')
-add_author('Andrzej','Pilipiuk')
-add_author('Andrzej','Pilipiuk')
-add_author('Andrzej','Sapkowski')
-add_person('Janina',u'Śmiałek')
-add_person('Janina',u'Śmiałek')
+# add_tag('testowy')
+# add_author('Andrzej','Pilipiuk')
+# add_author('Andrzej','Pilipiuk')
+# add_author('Andrzej','Sapkowski')
+# add_person('Janina',u'Śmiałek')
+# add_person('Janina',u'Śmiałek')
 add_person('Marta',u'Pęcak')
 add_person('Dawid',u'Pęcak',email='dawid.pecak@gmail.com')
 
-add_book('978-83-246-2716-5',
-u'Lekarze, naukowcy, szarlatani. Od przerażonego pacjenta do świadomego konsumenta',
-'Ben','Goldacre','Romek',u'Pęcak',
-url='https://lubimyczytac.pl/ksiazka/88203/lekarze-naukowcy-szarlatani-od-przerazonego-pacjenta-do-swiadomego-konsumenta',
-publisher='Septem',language='czeski',bookcase='Autralia',shelf='Sydney')
+# add_book('978-83-246-2716-5',
+# u'Lekarze, naukowcy, szarlatani. Od przerażonego pacjenta do świadomego konsumenta',
+# 'Ben','Goldacre','Romek',u'Pęcak',
+# url='https://lubimyczytac.pl/ksiazka/88203/lekarze-naukowcy-szarlatani-od-przerazonego-pacjenta-do-swiadomego-konsumenta',
+# publisher='Septem',language='czeski',bookcase='Autralia',shelf='Sydney')
 
 
 add_tag2book(8,3)
+returnbook(1)
+borrow(1,1,  '2011-10-10')
+returnbook(1,'2012-01-21')
+borrow(1,1,  '2012-10-10')
+returnbook(1,'2013-01-21')
+borrow(1,1,  '2013-10-10')
+returnbook(1,'2014-01-21')
+borrow(1,1,  '2018-10-10')
+returnbook(1,'2019-01-21')
 
-borrow(3,3)
-borrow(7,3,'2018-10-10')
 borrow(1,1)
 borrow(2,1)
+borrow(3,3)
 returnbook(3)
 returnbook(2,'2021-01-21')
+returnbook(1)
+
+for i in (1,2,3,4,5,6,7):
+    returnbook(i)
+borrow(1,1)
+borrow(2,3)
+borrow(3,1)
+borrow(4,3)
+borrow(5,1)
+borrow(6,3)
+borrow(7,1)
+
+
+# for i in (1,2,3,4,5,6,7):
+#     returnbook(i)
+# 
+# borrow(1,3,'2020-11-05')
+# borrow(2,3,'2020-10-26')
+# borrow(3,3,'2020-09-10')
+# # borrow(4,3,'2020-06-10')
+# # borrow(5,3,'2019-10-10')
+# borrow(4,3,'2020-10-08')
+# borrow(5,3,'2020-10-01')
+# borrow(6,3,'2020-09-25')
+# borrow(7,3,'2020-09-18')
+
 # returnbook(7,'2011-01-21')
 
 # TODO add entries to database:

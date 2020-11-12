@@ -61,7 +61,7 @@ Here the timetable is shown. Within a workflow, the things should be done in ord
 
 Workflow #1
 1. ~~database structure in SQL~~
-2. managing SQLite with python script 
+2. ~~managing SQLite with python script ~~
 3. fill in the database (partially)
 4. ...
 5. GUI
@@ -122,22 +122,22 @@ Workflow #4
      - [ ] destroying books (lost flag=1, removing relations)
  - [ ] dumping database for Git purposes (anonimizing the outuput)
 - [ ] GUI
- - [ ] code basic view
-   - [ ] listing: books, authors, borrowers
+ - [ ] static html code basic view
+   - [X] listing: books, authors, borrowers
    - [ ] sorting books by Title, Language
  - [ ] managing entries
    - [ ] adding new entries to books, authors, borrowers 
    - [ ] removing entries from books, authors, borrowers
    - [ ] updating info about books, authors, borrowers
- - [ ] managing borrowings
-   - [ ] borrower borrows book
-   - [ ] book is returned
+ - [X] managing borrowings
+   - [X] borrower borrows book
+   - [X] book is returned
    
 ---
 
 # **TODO2** LIST: things for later
-- [ ] adding books: author and owner should be a list
-- [ ] log items that has been ignored
+- [ ] adding books: author and owner should be a list type
+- [X] log items that has been ignored
 
 ---
 

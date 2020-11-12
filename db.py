@@ -152,6 +152,13 @@ def borrow(bookID,personID,start=None):
     """Description """
     c=connection()
     cur=c.cursor()
+    cur.execute('SELECT * FROM borrowings WHERE id_book=? AND start_date IS NOT NULL AND end_date IS NULL;',(bookID,))
+    row=cur.fetchone()
+    available=True if (row==None) else False
+    if(available==False): 
+        logger.add("Book with id=%d is not available (someone is reading it)."%(bookID,),1)
+        return
+    # print(row,available)
     if(start):
         try:
             cur.execute('INSERT  INTO borrowings(id_book,id_people,start_date) VALUES(?,?,?);',(bookID,personID,start))
@@ -163,7 +170,7 @@ def borrow(bookID,personID,start=None):
         except sqlite3.Error as er:
             logger.add('SQLite error: %s' % (' '.join(er.args)),1)
 
-    logger.add("The book has been borrowed",3)
+    logger.add("The book with id=%d has been borrowed"%(bookID,),3)
     c.commit()    
     c.close()
 
@@ -171,6 +178,11 @@ def returnbook(bookID,end=None):
     """Description """
     c=connection()
     cur=c.cursor()
+    cur.execute('SELECT * FROM borrowings WHERE id_book=? AND start_date IS NOT NULL AND end_date IS NULL;',(bookID,))
+    if(cur.fetchone() is None): 
+        logger.add("Book with id=%d is not borrowed, it's on the shelf."%(bookID,),1)
+        return
+
     if(end):
         cur.execute('UPDATE borrowings SET end_date=? WHERE id_book=? AND end_date IS NULL;',(end,bookID))
     else:

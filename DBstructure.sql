@@ -1,4 +1,6 @@
 PRAGMA FOREIGN_KEYS=OFF;
+PRAGMA encoding="UTF-8";
+
 BEGIN TRANSACTION;
 
 DROP TABLE IF EXISTS book;
@@ -75,7 +77,7 @@ CREATE TABLE borrowings
   start_date  character varying DEFAULT (date('now')), 
   end_date    character varying CHECK (end_date >= start_date),
   
-  UNIQUE(id_book),
+  -- UNIQUE(id_book),
   FOREIGN KEY(id_book)     REFERENCES book(id) ON DELETE CASCADE,
   FOREIGN KEY(id_people)   REFERENCES people(id) ON DELETE CASCADE
 );
@@ -114,7 +116,8 @@ CREATE TABLE book_R_tag
 INSERT INTO "people" VALUES
 (1,'Daniel','Pęcak','daniel.pecak@gmail.com',693307789),
 (2,'Karolina','Pęcak','karolina.suszynska@gmail.com',694292347),
-(3,'Ada','Borowa','ada.borowa@gmail.com','');
+(3,'Ada','Borowa','ada.borowa@gmail.com',''),
+(4,'Janina','Śmiałek','','');
 
 INSERT INTO "tag"(name) VALUES
 ('nauka'),('fizyka'),('matematyka'),
