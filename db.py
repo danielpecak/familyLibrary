@@ -102,7 +102,7 @@ def add_book(isbn,title,fauthor,lauthor,fowner,lowner,url=None,publisher=None,la
     bookID=cur.lastrowid
     
     if((bookID!=0) and (bookID is not None)):
-        print(2)
+        # print(2)
         # TODO add INSERT OR IGNORE
         try:
             cur.execute('INSERT INTO book_R_author(id_book,id_author) VALUES(?,?);', (bookID,authorID))

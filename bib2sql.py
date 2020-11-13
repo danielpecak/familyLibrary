@@ -20,7 +20,14 @@ for id in bibdata.entries:
     # for a in bibdata.entries[id].persons[unicode('author')]:
         # print id, unicode(a.first()[0]), unicode(a.last()[0])
     a = bibdata.entries[id].persons[unicode('author')][0]
-    add_book(b["isbn"],b["title"],
+    title=b['title']
+    if 'subtitle' in b:
+        title=title+". "+b['subtitle']
+    if 'volume' in b:
+        title=title+" T. "+b['volume']
+    if 'part' in b:
+        title=title+" cz. "+b['part']
+    add_book(b["isbn"],title,
     a.first()[0],a.last()[0],'Daniel',u'Pęcak',
     publisher=b["publisher"])
     records.append((None,unicode(a.first()[0]), unicode(a.last()[0])))
@@ -65,7 +72,7 @@ add_person('Dawid',u'Pęcak',email='dawid.pecak@gmail.com')
 
 
 add_tag2book(8,3)
-returnbook(1)
+# returnbook(1)
 borrow(1,1,  '2011-10-10')
 returnbook(1,'2012-01-21')
 borrow(1,1,  '2012-10-10')
@@ -110,3 +117,9 @@ borrow(7,1)
 
 # TODO add entries to database:
 # add books
+
+# NOTE Borrowings
+# borrow(Odkuczacz czarownicy,Śmiałek)
+# borrow(ZnikajacaLyzeczka,Śmiałek)
+# borrow(Cezar,Śmiałek)
+# borrow(Astrofizyka,Śmiałek)
