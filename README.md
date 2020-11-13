@@ -62,14 +62,14 @@ Here the timetable is shown. Within a workflow, the things should be done in ord
 Workflow #1
 1. ~~database structure in SQL~~
 2. ~~managing SQLite with python script ~~
-3. fill in the database (partially)
+3. ~~fill in the database (partially)~~
 4. ...
 5. GUI
 6. ...
 7. fill in the database (completely)
 
 Workflow #2
-1. Talk about the design with Karo
+1. ~~Talk about the design with Karo~~
 2. Download vector graphics 
 3. Make new graphics that are needed or when the licensing is not good for me
 4. First draft of ex-libris
@@ -126,6 +126,9 @@ Workflow #4
     - [X] book is returned
 - [ ] GUI
  - [X] static html code basic view
+ - [ ] implement flask
+ - [ ] incorporate static listing
+ - [ ] implement dynamic sorting on columns
    - [X] listing: books, authors, borrowers
    - [ ] ~~sorting books by Title, Language~~
  - [ ] managing entries
