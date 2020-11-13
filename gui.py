@@ -20,15 +20,17 @@ def show_books():
     f.write(HEADER)
     conn = connection()
     cur  = conn.cursor()
+    cur.execute("SELECT COUNT(*) FROM book WHERE annihilated=0;")
+    
+    f.write("<h3>Stan biblioteki: %s pozycji</h3>"%(cur.fetchone()[0],))
     cur.execute("""
-    SELECT book.title, author.first_name, author.last_name, book.bookcase, book.shelf, max(borrowings.end_date IS NULL) 
+    SELECT book.title, author.first_name, author.last_name, book.bookcase, book.shelf, max(borrowings.end_date IS NULL AND borrowings.start_date IS NOT NULL) as isborrowed
     FROM book 
     INNER JOIN book_R_author ON book_R_author.id_book=book.id 
-    INNER JOIN author ON book_R_author.id_author=author.id 
-    LEFT JOIN borrowings ON borrowings.id_book=book.id 
+    INNER JOIN author        ON book_R_author.id_author=author.id 
+    LEFT JOIN borrowings     ON borrowings.id_book=book.id 
     WHERE book.annihilated=0
-    GROUP BY book.isbn 
-    ORDER BY book.id;
+    GROUP BY book.id;
     """)
     f.write("<table>\n")
     f.write("""<tr>    <td>Tytuł</td>    <td>Autor</td>    <td>Dostępność</td>    </tr>\n""")
@@ -45,7 +47,7 @@ def show_books():
             loc=str(r[3]).encode('utf-8')+"."+str(r[4]).encode('utf-8')
         # print(title,author,loc,freeFlag)
         if(freeFlag):
-            loc2="<a class='stress'>Not available</a>"
+            loc2="<p class='stress'>Niedostępne</p>"
         else:
             loc2=loc
         m=("<td class='booktitle'>%s</td><td>%s</td><td>%s</td>"%(title,author,loc2))
@@ -55,13 +57,14 @@ def show_books():
 
 
     cur.execute("""
-    SELECT author.first_name, author.last_name, COUNT() 
+    SELECT author.first_name, author.last_name, COUNT(author.id) as nr 
     FROM book 
     INNER JOIN book_R_author ON book_R_author.id_book=book.id 
     INNER JOIN author ON book_R_author.id_author=author.id 
     WHERE book.annihilated=0
     GROUP BY author.id 
-    ORDER BY author.id;
+    HAVING nr>1 
+    ORDER BY nr DESC;
     """)
     f.write("<table>\n")
     f.write("<h3>Statystyka autorów</h3>\n")
@@ -164,6 +167,8 @@ def show_borrowed():
     f.write(FOOTER)
     conn.close()
     f.close()
+
+returnbook(3)
 
 show_books()
 show_borrowed()

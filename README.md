@@ -121,23 +121,25 @@ Workflow #4
      - [ ] adding authors to book
      - [ ] destroying books (lost flag=1, removing relations)
  - [ ] dumping database for Git purposes (anonimizing the outuput)
+  - [X] managing borrowings
+    - [X] borrower borrows book
+    - [X] book is returned
 - [ ] GUI
- - [ ] static html code basic view
+ - [X] static html code basic view
    - [X] listing: books, authors, borrowers
-   - [ ] sorting books by Title, Language
+   - [ ] ~~sorting books by Title, Language~~
  - [ ] managing entries
    - [ ] adding new entries to books, authors, borrowers 
    - [ ] removing entries from books, authors, borrowers
    - [ ] updating info about books, authors, borrowers
- - [X] managing borrowings
-   - [X] borrower borrows book
-   - [X] book is returned
    
 ---
 
 # **TODO2** LIST: things for later
 - [ ] adding books: author and owner should be a list type
 - [X] log items that has been ignored
+- [ ] add archive_tables and store there destroyed books, and returned books
+   - [ ] use TRIGGERS to do that
 
 ---
 
