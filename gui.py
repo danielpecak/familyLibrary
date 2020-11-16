@@ -21,8 +21,9 @@ def show_books():
     conn = connection()
     cur  = conn.cursor()
     cur.execute("SELECT COUNT(*) FROM book WHERE annihilated=0;")
+    noofbooks = cur.fetchone()[0]
     
-    f.write("<h3>Stan biblioteki: %s pozycji</h3>"%(cur.fetchone()[0],))
+    f.write("<h3>Stan biblioteki: %s pozycji</h3>"%(noofbooks,))
     cur.execute("""
     SELECT book.title, author.first_name, author.last_name, book.bookcase, book.shelf, max(borrowings.end_date IS NULL AND borrowings.start_date IS NOT NULL) as isborrowed
     FROM book 
@@ -35,6 +36,7 @@ def show_books():
     f.write("<table>\n")
     f.write("""<tr>    <td>Tytuł</td>    <td>Autor</td>    <td>Dostępność</td>    </tr>\n""")
     rows=cur.fetchall()
+    status=[]
     for r in rows:
         f.write("<tr>")
         title=r[0].encode('utf-8')
@@ -45,16 +47,20 @@ def show_books():
             loc="Europa"
         else:
             loc=str(r[3]).encode('utf-8')+"."+str(r[4]).encode('utf-8')
-        # print(title,author,loc,freeFlag)
         if(freeFlag):
             loc2="<p class='stress'>Niedostępne</p>"
         else:
             loc2=loc
         m=("<td class='booktitle'>%s</td><td>%s</td><td>%s</td>"%(title,author,loc2))
+        if(freeFlag):
+            loc2="Niedostępne"
+        else:
+            loc2=loc
+        status.append((r[0],r[1]+" "+r[2],freeFlag, loc2.decode('utf-8')))
+        # status.append((title,author,freeFlag,loc2))
         f.write(m)
         f.write("</tr>\n")
     f.write("</table></br>")
-
 
     cur.execute("""
     SELECT author.first_name, author.last_name, COUNT(author.id) as nr 
@@ -70,17 +76,21 @@ def show_books():
     f.write("<h3>Statystyka autorów</h3>\n")
     f.write("""<tr>  <td>Autor</td>    <td>Ile książek</td>    </tr>\n""")
     rows=cur.fetchall()
+    stats=[]
     for r in rows:
         f.write("<tr>")
         author=r[0].encode('utf-8')+" "+r[1].encode('utf-8')
         howmany=r[2]
         m=("<td>%s</td><td>%s</td>"%(author,howmany))
+        stats.append((r[0]+" "+r[1],r[2]))
+        # stats.append((author,howmany))
         f.write(m)
         f.write("</tr>\n")
     f.write("</table>")
     f.write(FOOTER)
     conn.close()
     f.close()
+    return noofbooks, status, stats
 
 def calcTime(ddays):
     # TODO form
@@ -127,6 +137,7 @@ def show_borrowed():
     f.write("<table>\n")
     f.write("""<tr>    <td>Tytuł</td>    <td>Autor</td>    <td>Wypożyczający</td> <td>Kiedy wypożyczone</td>    </tr>\n""")
     rows=cur.fetchall()
+    status = []
     for r in rows:
         # print(r)
         f.write("<tr>")
@@ -136,6 +147,7 @@ def show_borrowed():
         # print(title,author,borrower)
         m=("<td class='booktitle'>%s</td><td>%s</td><td>%s</td><td>%s</td>"%(title,author,borrower,calcTime(r[6])))
         f.write(m)
+        status.append((r[0],r[1]+" "+r[2],r[3]+" "+r[4],calcTime(r[6])))
         f.write("</tr>\n")
     f.write("</table></br>")
     
@@ -153,12 +165,14 @@ def show_borrowed():
     f.write("<table>\n <h3>Statystyki wypożyczeń</h3>")
     f.write("""<tr>  <td>Wypożyczający</td> <td>Liczba książek</td>    </tr>\n""")
     rows=cur.fetchall()
+    stats=[]
     for r in rows:
         # print(r)
         f.write("<tr>")
         borrower=r[0].encode('utf-8')+" "+r[1].encode('utf-8')
         howmany=r[2]
         m=("<td>%s</td><td>%s</td>"%(borrower,howmany))
+        stats.append((r[0]+" "+r[1],howmany))
         f.write(m)
         f.write("</tr>\n")
     f.write("</table>")
@@ -167,6 +181,7 @@ def show_borrowed():
     f.write(FOOTER)
     conn.close()
     f.close()
+    return status, stats
 
 returnbook(3)
 

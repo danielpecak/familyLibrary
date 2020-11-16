@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>  <link rel="stylesheet" href="{{ url_for('static', filename = 'css.css') }}"></head>
+<body>
+  <a href="/books">Books</a>      </br>
+  <a href="/borrowed">Borrowed</a></br>
+  </br>
+  <table>
+    <tr>    <td>Tytuł</td>    <td>Autor</td>    <td>Wypożyczający</td> <td>Kiedy wypożyczone</td>    </tr>
+    {% for row in status %}
+      <tr><td class='booktitle'>{{ row[0] }}</td>
+      <td>{{ row[1] }}</td>
+      <td>{{ row[2] }}</td>
+      <td>{{ row[3] }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  
+  <h3>Statystyki wypożyczeń</h3>
+
+  <table>
+    <tr>  <td>Wypożyczający</td> <td>Liczba książek</td>    </tr>
+    
+    {% for row in stats %}
+        <tr><td>{{row[0]}}</td><td>{{row[1]}}</td></tr>
+    {% endfor %}
+  </table>
+  
+</body>
+</html>

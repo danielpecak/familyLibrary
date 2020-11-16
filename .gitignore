@@ -1,6 +1,8 @@
 graph/
 *.db
-*.html
+html_books.html
+html_borrowed.html
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
