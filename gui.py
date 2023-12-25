@@ -38,15 +38,15 @@ def show_books():
     rows=cur.fetchall()
     status=[]
     for r in rows:
-        f.write("<tr>")
+        f.write(b"<tr>")
         title=r[0].encode('utf-8')
-        author=r[1].encode('utf-8')+" "+r[2].encode('utf-8')
+        author=r[1].encode('utf-8')+b" "+r[2].encode('utf-8')
         freeFlag=r[5]
         # print(freeFlag)
         if r[3] is None:
             loc="Europa"
         else:
-            loc=str(r[3]).encode('utf-8')+"."+str(r[4]).encode('utf-8')
+            loc=str(r[3]).encode('utf-8')+b"."+str(r[4]).encode('utf-8')
         if(freeFlag):
             loc2="<p class='stress'>Niedostępne</p>"
         else:
@@ -56,9 +56,9 @@ def show_books():
             loc2="Niedostępne"
         else:
             loc2=loc
-        status.append((r[0],r[1]+" "+r[2],freeFlag, loc2.decode('utf-8')))
+        status.append((r[0],r[1]+" "+r[2],freeFlag, loc2))
         # status.append((title,author,freeFlag,loc2))
-        f.write(m)
+        f.write(m.encode())
         f.write(b"</tr>\n")
     f.write(b"</table></br>")
 
@@ -78,13 +78,13 @@ def show_books():
     rows=cur.fetchall()
     stats=[]
     for r in rows:
-        f.write("<tr>")
-        author=r[0].encode('utf-8')+" "+r[1].encode('utf-8')
+        f.write(b"<tr>")
+        author=r[0].encode('utf-8')+b" "+r[1].encode('utf-8')
         howmany=r[2]
         m=("<td>%s</td><td>%s</td>"%(author,howmany))
         stats.append((r[0]+" "+r[1],r[2]))
         # stats.append((author,howmany))
-        f.write(m)
+        f.write(m.encode())
         f.write(b"</tr>\n")
     f.write(b"</table>")
     f.write(FOOTER.encode())
@@ -140,13 +140,13 @@ def show_borrowed():
     status = []
     for r in rows:
         # print(r)
-        f.write("<tr>")
+        f.write(b"<tr>")
         title=r[0].encode('utf-8')
-        author=r[1].encode('utf-8')+" "+r[2].encode('utf-8')
-        borrower=r[3].encode('utf-8')+" "+r[4].encode('utf-8')
+        author=r[1].encode('utf-8')+b" "+r[2].encode('utf-8')
+        borrower=r[3].encode('utf-8')+b" "+r[4].encode('utf-8')
         # print(title,author,borrower)
         m=("<td class='booktitle'>%s</td><td>%s</td><td>%s</td><td>%s</td>"%(title,author,borrower,calcTime(r[6])))
-        f.write(m)
+        f.write(m.encode())
         status.append((r[0],r[1]+" "+r[2],r[3]+" "+r[4],calcTime(r[6])))
         f.write(b"</tr>\n")
     f.write(b"</table></br>")
@@ -168,12 +168,12 @@ def show_borrowed():
     stats=[]
     for r in rows:
         # print(r)
-        f.write("<tr>")
-        borrower=r[0].encode('utf-8')+" "+r[1].encode('utf-8')
+        f.write(b"<tr>")
+        borrower=r[0].encode('utf-8')+b" "+r[1].encode('utf-8')
         howmany=r[2]
         m=("<td>%s</td><td>%s</td>"%(borrower,howmany))
         stats.append((r[0]+" "+r[1],howmany))
-        f.write(m)
+        f.write(m.encode())
         f.write(b"</tr>\n")
     f.write(b"</table>")
 

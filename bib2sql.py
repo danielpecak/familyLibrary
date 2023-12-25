@@ -13,13 +13,12 @@ cur  = conn.cursor()
 
 parser = bibtex.Parser()
 bibdata = parser.parse_file(BIBTEXFILE)
-
 records=[]
 for id in bibdata.entries:
     b = bibdata.entries[id].fields
-    # for a in bibdata.entries[id].persons[unicode('author')]:
-        # print id, unicode(a.first()[0]), unicode(a.last()[0])
-    a = bibdata.entries[id].persons[unicode('author')][0]
+    # for a in bibdata.entries[id].persons[str('author')]:
+        # print id, str(a.first()[0]), str(a.last()[0])
+    a = bibdata.entries[id].persons[str('author')][0]
     title=b['title']
     if 'subtitle' in b:
         title=title+". "+b['subtitle']
@@ -30,10 +29,10 @@ for id in bibdata.entries:
     add_book(b["isbn"],title,
     a.first()[0],a.last()[0],'Daniel',u'Pęcak',
     publisher=b["publisher"])
-    records.append((None,unicode(a.first()[0]), unicode(a.last()[0])))
+    records.append((None,str(a.first()[0]), str(a.last()[0])))
     # print b["year"]
 
-# 
+#
 # cur.executemany('INSERT OR IGNORE INTO author VALUES(?,?,?);', records)
 # print('# We have inserted '+str(cur.rowcount)+' records to the AUTHOR table.')
 # 
