@@ -18,6 +18,15 @@ log items that has been ignored including the history of borrowing.
 Run in the command line (or ``--debug run``):
 ``flask --app hello.py run``
 
+### Testing database
+Making 'example.db' based on 'DBstructure.sql'.
+To setup the database:
+  * `rm example.db`
+  * `./init_db.py`
+  * `./bib2sql.py`
+
+###
+
 ---
 
 ## Name:
@@ -246,5 +255,3 @@ what should be given under the link where QR code directs
 
 
 ### Table: Subcategories? Science/Children/etc?
-
-

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Scripts to transform BibTeX format to SQLite database
 
@@ -9,7 +9,7 @@ BIBTEXFILE="library.bib"
 from pybtex.database.input import bibtex
 from  db import *
 conn = connection()
-cur  = conn.cursor() 
+cur  = conn.cursor()
 
 parser = bibtex.Parser()
 bibdata = parser.parse_file(BIBTEXFILE)
@@ -35,7 +35,7 @@ for id in bibdata.entries:
 #
 # cur.executemany('INSERT OR IGNORE INTO author VALUES(?,?,?);', records)
 # print('# We have inserted '+str(cur.rowcount)+' records to the AUTHOR table.')
-# 
+#
 # books=[]
 # for id in bibdata.entries:
 #     b = bibdata.entries[id].fields
@@ -44,8 +44,8 @@ for id in bibdata.entries:
 #     # print b["publisher"]
 #     # print b["title"]
 #     # print b["isbn"]
-# 
-# 
+#
+#
 # cur.executemany('INSERT OR IGNORE INTO book(isbn,title,publisher) VALUES(?,?,?);', books)
 # print('# We have inserted '+str(cur.rowcount)+' records to the BOOK table.')
 # # TODO add owner
@@ -85,7 +85,7 @@ borrow(1,1)
 borrow(2,1)
 borrow(3,3)
 returnbook(3)
-returnbook(2,'2021-01-21')
+returnbook(2,'2025-01-21') # Should be in the future from TODAY
 returnbook(1)
 
 for i in (1,2,3,4,5,6,7):
@@ -101,7 +101,7 @@ borrow(7,1)
 
 # for i in (1,2,3,4,5,6,7):
 #     returnbook(i)
-# 
+#
 # borrow(1,3,'2020-11-05')
 # borrow(2,3,'2020-10-26')
 # borrow(3,3,'2020-09-10')
