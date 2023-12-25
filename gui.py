@@ -39,14 +39,14 @@ def show_books():
     status=[]
     for r in rows:
         f.write(b"<tr>")
-        title=r[0].encode('utf-8')
-        author=r[1].encode('utf-8')+b" "+r[2].encode('utf-8')
+        title=r[0].encode()
+        author=r[1].encode()+b" "+r[2].encode()
         freeFlag=r[5]
         # print(freeFlag)
         if r[3] is None:
             loc="Europa"
         else:
-            loc=str(r[3]).encode('utf-8')+b"."+str(r[4]).encode('utf-8')
+            loc=str(r[3]).encode()+b"."+str(r[4]).encode()
         if(freeFlag):
             loc2="<p class='stress'>Niedostępne</p>"
         else:
@@ -79,7 +79,7 @@ def show_books():
     stats=[]
     for r in rows:
         f.write(b"<tr>")
-        author=r[0].encode('utf-8')+b" "+r[1].encode('utf-8')
+        author=r[0].encode()+b" "+r[1].encode()
         howmany=r[2]
         m=("<td>%s</td><td>%s</td>"%(author,howmany))
         stats.append((r[0]+" "+r[1],r[2]))
@@ -141,9 +141,9 @@ def show_borrowed():
     for r in rows:
         # print(r)
         f.write(b"<tr>")
-        title=r[0].encode('utf-8')
-        author=r[1].encode('utf-8')+b" "+r[2].encode('utf-8')
-        borrower=r[3].encode('utf-8')+b" "+r[4].encode('utf-8')
+        title=r[0].encode()
+        author=r[1].encode()+b" "+r[2].encode()
+        borrower=r[3].encode()+b" "+r[4].encode()
         # print(title,author,borrower)
         m=("<td class='booktitle'>%s</td><td>%s</td><td>%s</td><td>%s</td>"%(title,author,borrower,calcTime(r[6])))
         f.write(m.encode())
@@ -169,7 +169,7 @@ def show_borrowed():
     for r in rows:
         # print(r)
         f.write(b"<tr>")
-        borrower=r[0].encode('utf-8')+b" "+r[1].encode('utf-8')
+        borrower=r[0].encode()+b" "+r[1].encode()
         howmany=r[2]
         m=("<td>%s</td><td>%s</td>"%(borrower,howmany))
         stats.append((r[0]+" "+r[1],howmany))
