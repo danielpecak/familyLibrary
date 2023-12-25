@@ -17,24 +17,24 @@ FOOTER = """
 
 def show_books():
     f = open('html_books.html','wb+')
-    f.write(HEADER)
+    f.write(HEADER.encode())
     conn = connection()
     cur  = conn.cursor()
     cur.execute("SELECT COUNT(*) FROM book WHERE annihilated=0;")
     noofbooks = cur.fetchone()[0]
-    
-    f.write("<h3>Stan biblioteki: %s pozycji</h3>"%(noofbooks,))
+
+    f.write(("<h3>Stan biblioteki: %s pozycji</h3>"%(noofbooks,)).encode())
     cur.execute("""
     SELECT book.title, author.first_name, author.last_name, book.bookcase, book.shelf, max(borrowings.end_date IS NULL AND borrowings.start_date IS NOT NULL) as isborrowed
-    FROM book 
-    INNER JOIN book_R_author ON book_R_author.id_book=book.id 
-    INNER JOIN author        ON book_R_author.id_author=author.id 
-    LEFT JOIN borrowings     ON borrowings.id_book=book.id 
+    FROM book
+    INNER JOIN book_R_author ON book_R_author.id_book=book.id
+    INNER JOIN author        ON book_R_author.id_author=author.id
+    LEFT JOIN borrowings     ON borrowings.id_book=book.id
     WHERE book.annihilated=0
     GROUP BY book.id;
     """)
-    f.write("<table>\n")
-    f.write("""<tr>    <td>Tytuł</td>    <td>Autor</td>    <td>Dostępność</td>    </tr>\n""")
+    f.write(b"<table>\n")
+    f.write("""<tr>    <td>Tytuł</td>    <td>Autor</td>    <td>Dostępność</td>    </tr>\n""".encode())
     rows=cur.fetchall()
     status=[]
     for r in rows:
@@ -59,22 +59,22 @@ def show_books():
         status.append((r[0],r[1]+" "+r[2],freeFlag, loc2.decode('utf-8')))
         # status.append((title,author,freeFlag,loc2))
         f.write(m)
-        f.write("</tr>\n")
-    f.write("</table></br>")
+        f.write(b"</tr>\n")
+    f.write(b"</table></br>")
 
     cur.execute("""
-    SELECT author.first_name, author.last_name, COUNT(author.id) as nr 
-    FROM book 
-    INNER JOIN book_R_author ON book_R_author.id_book=book.id 
-    INNER JOIN author ON book_R_author.id_author=author.id 
+    SELECT author.first_name, author.last_name, COUNT(author.id) as nr
+    FROM book
+    INNER JOIN book_R_author ON book_R_author.id_book=book.id
+    INNER JOIN author ON book_R_author.id_author=author.id
     WHERE book.annihilated=0
-    GROUP BY author.id 
-    HAVING nr>1 
+    GROUP BY author.id
+    HAVING nr>1
     ORDER BY nr DESC;
     """)
-    f.write("<table>\n")
-    f.write("<h3>Statystyka autorów</h3>\n")
-    f.write("""<tr>  <td>Autor</td>    <td>Ile książek</td>    </tr>\n""")
+    f.write(b"<table>\n")
+    f.write("<h3>Statystyka autorów</h3>\n".encode())
+    f.write("""<tr>  <td>Autor</td>    <td>Ile książek</td>    </tr>\n""".encode())
     rows=cur.fetchall()
     stats=[]
     for r in rows:
@@ -85,9 +85,9 @@ def show_books():
         stats.append((r[0]+" "+r[1],r[2]))
         # stats.append((author,howmany))
         f.write(m)
-        f.write("</tr>\n")
-    f.write("</table>")
-    f.write(FOOTER)
+        f.write(b"</tr>\n")
+    f.write(b"</table>")
+    f.write(FOOTER.encode())
     conn.close()
     f.close()
     return noofbooks, status, stats
@@ -117,25 +117,25 @@ def calcTime(ddays):
         return "%s d temu"%(days,)
         return "%s dni temu"%(days,)
 
-    
+
 
 def show_borrowed():
     f = open('html_borrowed.html','wb+')
-    f.write(HEADER)
+    f.write(HEADER.encode())
     conn = connection()
     cur  = conn.cursor()
     cur.execute("""
     SELECT book.title, author.first_name, author.last_name, people.first_name, people.last_name, borrowings.start_date, julianday('now') - julianday(borrowings.start_date  )
     FROM borrowings
-    INNER JOIN book ON borrowings.id_book=book.id 
-    INNER JOIN people ON borrowings.id_people=people.id 
-    INNER JOIN book_R_author ON book_R_author.id_book=book.id 
-    INNER JOIN author ON book_R_author.id_author=author.id 
+    INNER JOIN book ON borrowings.id_book=book.id
+    INNER JOIN people ON borrowings.id_people=people.id
+    INNER JOIN book_R_author ON book_R_author.id_book=book.id
+    INNER JOIN author ON book_R_author.id_author=author.id
     WHERE book.annihilated=0 AND  borrowings.end_date IS NULL
     ORDER BY people.last_name;
     """)
-    f.write("<table>\n")
-    f.write("""<tr>    <td>Tytuł</td>    <td>Autor</td>    <td>Wypożyczający</td> <td>Kiedy wypożyczone</td>    </tr>\n""")
+    f.write("<table>\n".encode())
+    f.write("""<tr>    <td>Tytuł</td>    <td>Autor</td>    <td>Wypożyczający</td> <td>Kiedy wypożyczone</td>    </tr>\n""".encode())
     rows=cur.fetchall()
     status = []
     for r in rows:
@@ -148,22 +148,22 @@ def show_borrowed():
         m=("<td class='booktitle'>%s</td><td>%s</td><td>%s</td><td>%s</td>"%(title,author,borrower,calcTime(r[6])))
         f.write(m)
         status.append((r[0],r[1]+" "+r[2],r[3]+" "+r[4],calcTime(r[6])))
-        f.write("</tr>\n")
-    f.write("</table></br>")
-    
+        f.write(b"</tr>\n")
+    f.write(b"</table></br>")
+
     cur.execute("""
     SELECT people.first_name, people.last_name, COUNT()
     FROM borrowings
-    INNER JOIN book ON borrowings.id_book=book.id 
-    INNER JOIN people ON borrowings.id_people=people.id 
-    INNER JOIN book_R_author ON book_R_author.id_book=book.id 
-    INNER JOIN author ON book_R_author.id_author=author.id 
+    INNER JOIN book ON borrowings.id_book=book.id
+    INNER JOIN people ON borrowings.id_people=people.id
+    INNER JOIN book_R_author ON book_R_author.id_book=book.id
+    INNER JOIN author ON book_R_author.id_author=author.id
     WHERE book.annihilated=0 AND  borrowings.end_date IS NULL
     GROUP BY people.last_name
     ORDER BY people.last_name;
     """)
-    f.write("<table>\n <h3>Statystyki wypożyczeń</h3>")
-    f.write("""<tr>  <td>Wypożyczający</td> <td>Liczba książek</td>    </tr>\n""")
+    f.write("<table>\n <h3>Statystyki wypożyczeń</h3>".encode())
+    f.write("""<tr>  <td>Wypożyczający</td> <td>Liczba książek</td>    </tr>\n""".encode())
     rows=cur.fetchall()
     stats=[]
     for r in rows:
@@ -174,11 +174,11 @@ def show_borrowed():
         m=("<td>%s</td><td>%s</td>"%(borrower,howmany))
         stats.append((r[0]+" "+r[1],howmany))
         f.write(m)
-        f.write("</tr>\n")
-    f.write("</table>")
-    
-    
-    f.write(FOOTER)
+        f.write(b"</tr>\n")
+    f.write(b"</table>")
+
+
+    f.write(FOOTER.encode())
     conn.close()
     f.close()
     return status, stats
@@ -187,4 +187,3 @@ returnbook(3)
 
 show_books()
 show_borrowed()
-    

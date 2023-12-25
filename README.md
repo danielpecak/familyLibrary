@@ -3,10 +3,24 @@
 
 log items that has been ignored including the history of borrowing.
 
+---
+
+## How to run:
+### Dependencies (and versions):
+ * flask
+ * werkzeug
+ * pybtex
+
+``sudo apt-get install python3-pybtex``
+
+``sudo apt-get install python3-flask``
+
+Run in the command line (or ``--debug run``):
+``flask --app hello.py run``
 
 ---
 
-## Name: 
+## Name:
 **Biblioteka Rodziny Pęcaków** (Polish)
 
 **Pęcak Family Library** (English)
@@ -26,11 +40,11 @@ Ex Libris Symbol
  - Dirac notation: <bra|ket>
  - atom symbol
  - Psi as a wavefunction
-- Karo: 
+- Karo:
  - bridge
  - metal construction
  - construction helmet
- - blueprint 
+ - blueprint
  - crane
  - tools
 - animals?
@@ -70,10 +84,10 @@ Workflow #1
 
 Workflow #2
 1. ~~Talk about the design with Karo~~
-2. Download vector graphics 
+2. Download vector graphics
 3. Make new graphics that are needed or when the licensing is not good for me
 4. First draft of ex-libris
-5. Second draft of ex-libris 
+5. Second draft of ex-libris
 
 Workflow #3
 1. QR generator function in python
@@ -84,11 +98,11 @@ Workflow #4
  ---
 
 # **TODO** LIST
-- [ ] ex libris 
+- [ ] ex libris
  - [X] brain storming
- - [ ] pencil drafts 
+ - [ ] pencil drafts
  - [ ] brain storming: choosing best
- - [ ] raw Inkscape version of best 3 
+ - [ ] raw Inkscape version of best 3
  - [ ] final choice
 - [X] BiBTeX to SQL converter
  - [X] library for conversion (pybtex)
@@ -98,7 +112,7 @@ Workflow #4
 - [ ] QR generator (generate whenever a new item is added to **books** table)
  - [X] draft of generator
  - [ ] function **make_qr(url_text,path/filename)**
- - [ ] function **update_qrs(dir,?)** that reads all the qrs from *dir* and changes them to the desired new format (update links or change the size of qrs). Maybe update should be done based on database content 
+ - [ ] function **update_qrs(dir,?)** that reads all the qrs from *dir* and changes them to the desired new format (update links or change the size of qrs). Maybe update should be done based on database content
  - [ ] use *qrcode* library in more sophisticated way
 - [ ] Database
  - [X] code the structure
@@ -110,8 +124,8 @@ Workflow #4
    - [ ] updating
  - [ ] code test cases (use some real books on the shelf)
    - [X] code people (owners and borrowers)
-   - [ ] code books 
-   - [ ] real testing: code actions 
+   - [ ] code books
+   - [ ] real testing: code actions
      - [X] adding books to library
      - [X] adding new people
      - [X] adding borrowing books
@@ -132,10 +146,10 @@ Workflow #4
    - [X] listing: books, authors, borrowers
    - [ ] ~~sorting books by Title, Language~~
  - [ ] managing entries
-   - [ ] adding new entries to books, authors, borrowers 
+   - [ ] adding new entries to books, authors, borrowers
    - [ ] removing entries from books, authors, borrowers
    - [ ] updating info about books, authors, borrowers
-   
+
 ---
 
 # **TODO2** LIST: things for later
@@ -149,14 +163,14 @@ Workflow #4
 ## QR generator
 - generates a QR code with a link of type
   https://danielpecak.github.io/lib?id=123/ that gives some info
-- print QR sticker and stick it 
+- print QR sticker and stick it
 
 
 ## Website
 what should be given under the link where QR code directs
 - some basic info about the book
 - when the book has been borrowed
-- initials of the borrower 
+- initials of the borrower
 - if the book is not borrowed write that it is free
 - option of reservation for someone? this can be done by borrowing it in the system, but not physically
 
@@ -171,7 +185,7 @@ what should be given under the link where QR code directs
 ## Database structure
 
 ### Tables
-*book* 
+*book*
 - id
 - ISBN
 - title
@@ -210,7 +224,7 @@ what should be given under the link where QR code directs
 
 ? scalić *borrower* i *owner*?
 
-### Relations 
+### Relations
 *borrowing* (book-borrower)
 - id
 - id_book
