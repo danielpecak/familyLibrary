@@ -3,9 +3,9 @@
 # Utils for managing database in encapsulated form
 
 import sqlite3
-import os 
+import os
 import sys
-import logger 
+import logger
 
 DB_NAME='example.db'
 INIT_SQL='DBstructure.sql'
@@ -37,7 +37,7 @@ def add_author(fname,lname):
         logger.add("Author '%s %s' added to database %s"%(fname,lname,DB_NAME),3)
     else:
         logger.add("Author '%s %s' already exists in the database %s"%(fname,lname,DB_NAME),3)
-    c.commit()    
+    c.commit()
     c.close()
     return cur.lastrowid
 
@@ -54,7 +54,7 @@ def add_tag(tag):
         logger.add("Tag '%s' added to database %s"%(tag,DB_NAME),3)
     else:
         logger.add("Tag '%s' already exists in the database %s"%(tag,DB_NAME),2)
-    c.commit()    
+    c.commit()
     c.close()
     return cur.lastrowid
 
@@ -71,7 +71,7 @@ def add_person(fname,lname,email=None,phone=None):
         logger.add("Person '%s %s (Email:%s, Phone:%s)' added to database %s"%(fname,lname,email,phone,DB_NAME),3)
     else:
         logger.add("Person '%s %s (Email:%s, Phone:%s)' already exists in the database %s"%(fname,lname,email,phone,DB_NAME),2)
-    c.commit()    
+    c.commit()
     c.close()
     return cur.lastrowid
 
@@ -94,13 +94,13 @@ def add_book(isbn,title,fauthor,lauthor,fowner,lowner,url=None,publisher=None,la
         ownerID = add_person(fowner,lowner)
     else:
         ownerID = l[0][0]
-    
-    try:    
+
+    try:
         cur.execute('INSERT  INTO book(isbn,title,url,language,publisher,bookcase,shelf) VALUES(?,?,?,?,?,?,?);',(isbn,title,url,language,publisher,bookcase,shelf))
     except sqlite3.Error as er:
         logger.add('SQLite error: %s' % (' '.join(er.args)),1)
     bookID=cur.lastrowid
-    
+
     if((bookID!=0) and (bookID is not None)):
         # print(2)
         # TODO add INSERT OR IGNORE
@@ -119,7 +119,7 @@ def add_book(isbn,title,fauthor,lauthor,fowner,lowner,url=None,publisher=None,la
         logger.add("Book '%s' added to database %s"%(title,DB_NAME),3)
     else:
         logger.add("Book '%s' already exists in the  database %s"%(title,DB_NAME),2)
-    c.commit()    
+    c.commit()
     c.close()
 
 def add_tag2book(tagID,bookID):
@@ -144,18 +144,21 @@ def add_tag2book(tagID,bookID):
         logger.add("Tag '%s' added to the book '%s'"%(tagNAME,bookTITLE),3)
     else:
         logger.add("Tag '%s' already is connected to the book  '%s'"%(tagNAME,bookTITLE),2)
-    c.commit()    
+    c.commit()
     c.close()
     return cur.lastrowid
 
 def borrow(bookID,personID,start=None):
-    """Description """
+    """
+Borrows a book with 'bookID' to a person with 'personID'.
+When no start date is given, today date is set.
+"""
     c=connection()
     cur=c.cursor()
     cur.execute('SELECT * FROM borrowings WHERE id_book=? AND start_date IS NOT NULL AND end_date IS NULL;',(bookID,))
     row=cur.fetchone()
     available=True if (row==None) else False
-    if(available==False): 
+    if(available==False):
         logger.add("Book with id=%d is not available (someone is reading it)."%(bookID,),1)
         return
     # print(row,available)
@@ -171,15 +174,19 @@ def borrow(bookID,personID,start=None):
             logger.add('SQLite error: %s' % (' '.join(er.args)),1)
 
     logger.add("The book with id=%d has been borrowed"%(bookID,),3)
-    c.commit()    
+    c.commit()
     c.close()
 
 def returnbook(bookID,end=None):
-    """Description """
+    """
+Returns book with bookID to the set of books that are not borrowed. If the date of
+return is not given, it is set by default to today.
+If the book is not borrowed, it gives an error in the log.
+    """
     c=connection()
     cur=c.cursor()
     cur.execute('SELECT * FROM borrowings WHERE id_book=? AND start_date IS NOT NULL AND end_date IS NULL;',(bookID,))
-    if(cur.fetchone() is None): 
+    if(cur.fetchone() is None):
         logger.add("Book with id=%d is not borrowed, it's on the shelf."%(bookID,),1)
         return
 
@@ -187,7 +194,7 @@ def returnbook(bookID,end=None):
         cur.execute('UPDATE borrowings SET end_date=? WHERE id_book=? AND end_date IS NULL;',(end,bookID))
     else:
         cur.execute('UPDATE borrowings SET end_date=date("now") WHERE id_book=? AND end_date IS NULL;',(bookID,))
-    c.commit()    
+    c.commit()
     logger.add("The book has been returned.",3)
     c.close()
 
