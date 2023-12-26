@@ -122,9 +122,9 @@ Workflow #4
  - [X] books: foreign indices
 - [ ] QR generator (generate whenever a new item is added to **books** table)
  - [X] draft of generator
- - [ ] function **make_qr(url_text,path/filename)**
+ - [X] use *qrcode* library in more sophisticated way
+ - [X] function **generateQR(url_text,path/filename)**
  - [ ] function **update_qrs(dir,?)** that reads all the qrs from *dir* and changes them to the desired new format (update links or change the size of qrs). Maybe update should be done based on database content
- - [ ] use *qrcode* library in more sophisticated way
 - [ ] Database
  - [X] code the structure
  - [X] add table with tag names to the structure

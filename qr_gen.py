@@ -25,6 +25,38 @@ import sys
 # im2.save('image_93x93.png')
 
 
+def generateQR(MESSAGE,filename):
+    """
+Generates QR code with MESSAGE message and saves it at FILENAME.
+    """
+    qr = qrcode.QRCode(
+    version=4,
+    error_correction=qrcode.constants.ERROR_CORRECT_H,
+    box_size=10,
+    border=2,
+    )
+    qr.add_data(MESSAGE)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="white", back_color="black")
+    # Load the background template image
+    background_image = Image.open("graph/big.png")
+
+    # Calculate the center position for the existing image
+    # NOTE BUG for some reason img.width != img.height
+    x = (background_image.width  - img.height) // 2 + 20
+    y = (background_image.height - img.height) // 2 + 140
+    # Paste the existing image onto the new white image at the center position
+    background_image.paste(img, (x, y))
+
+    # Save the new image as a PNG file
+    background_image.save(filename)
+
+
+def update():
+    """
+Function goes throug all the books in database and generates new qr codes.
+    """
+    pass
 
 
 MESSAGE="https://danielpecak.github.io/lib.html#"
@@ -33,49 +65,6 @@ MESSAGE="https://danielpecak.github.io/lib.html#"
 # type(img)  # qrcode.image.pil.PilImage
 # img.save("some_file.png")
 for i in range(2):
-    qr = qrcode.QRCode(
-    version=4,
-    error_correction=qrcode.constants.ERROR_CORRECT_H,
-    box_size=10,
-    border=2,
-    )
     code = MESSAGE+str(i)
-    qr.add_data(code)
-    qr.make(fit=True)
-    img = qr.make_image(fill_color="white", back_color="black")
-    # Load the background template image
-    background_image = Image.open("graph/big.png")
-
-    # Create a new white image with 1440x900 dimensions
-    # existing_image = img#Image.open("graph/000.png")
-
-    # Calculate the center position for the existing image
-    # NOTE BUG for some reason img.width != img.height
-    x = (background_image.width  - img.height) // 2 + 20
-    y = (background_image.height - img.height) // 2 + 140
-
-    # Paste the existing image onto the new white image at the center position
-    background_image.paste(img, (x, y))
-
-    # Save the new image as a PNG file
-    # background_image.save("graph/new_wallpaper.png")
-    background_image.save('graph/'+str(i).zfill(3)+'.png')
-    # img.save('graph/'+str(i).zfill(3)+'.png')
-
-
-
-
-
-
-sys.exit()
-for i in range(2):
-    code = MESSAGE+str(i)
-    subprocess.Popen('qr "'+code+'" > graph/'+str(i).zfill(3)+'.png ', shell=True).wait()
-
-
-
-def update():
-    """
-Function goes throug all the books in database and generates new qr codes.
-    """
-    pass
+    filename = 'graph/'+str(i).zfill(3)+'.png'
+    generateQR(code,filename)
