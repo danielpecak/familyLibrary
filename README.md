@@ -15,6 +15,8 @@ log items that has been ignored including the history of borrowing.
 
 ``sudo apt-get install python3-flask``
 
+``sudo apt-get install python3-qrcode``
+
 Run in the command line (or ``--debug run``):
 ``flask --app hello.py run``
 
