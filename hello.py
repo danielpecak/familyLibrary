@@ -32,21 +32,17 @@ def book(bookID):
     if error:
         return render_template('bookError.html', message=msg)
     row = gui.show_book(bookID)
-    print(row)
-    if row[6]==None: #row[6]=end_date
-        title  = row[0]
-        author = row[1]+" "+row[2]
-        status = "wypożyczone od "+str(row[5])+", od "+str(round(row[7]))+"dni, wypożyczający: "+row[3]+" "+row[4][0]+'.'
+    title  = row[0]
+    author = row[1]+" "+row[2]
+    if len(row)==8:
+        if row[6]==None: #row[6]=end_date
+            status = "wypożyczone od "+str(row[5])+", od "+str(round(row[7]))+"dni, wypożyczający: "+row[3]+" "+row[4][0]+'.'
+            return render_template('book.html', title=title, author=author,
+                                   status=status)
 
-        # TODO calculate interwal: days, weeks, years
-        return render_template('book.html', title=title, author=author,
-                               status=status)
-    else:
-        title  = row[0]
-        author = row[1]+" "+row[2]
-        status = "W biblioteczce: można wypożyczać."
-        return render_template('book.html', title=title, author=author,
-                               status=status)
+    status = "W biblioteczce: można wypożyczać."
+    return render_template('book.html', title=title, author=author,
+                           status=status)
 
 @app.route('/books')
 def show_books():

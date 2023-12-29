@@ -9,25 +9,25 @@
   <table>
     <!-- <thead> -->
       <tr>  <td>Tytuł</td>    <td>Autor</td>    <td>Dostępność</td>    </tr>
-    <!-- </thead> -->    
+    <!-- </thead> -->
     {% for row in status %}
-      <tr><td class='booktitle'>{{ row[0] }}</td>
-      <td>{{ row[1] }}</td>
-      <td {% if row[2] %} class='stress'{% endif %}> {{ row[3] }}  </td></tr>
+      <tr><td class='booktitle'><a href="book/{{row[0]}}">{{ row[1] }}</a></td>
+      <td>{{ row[2] }}</td>
+      <td {% if row[3] %} class='stress'{% endif %}> {{ row[4] }}  </td></tr>
     {% endfor %}
   </table>
-  
+
   <h3>Statystyka autorów</h3>
 
   <table border = 1>
     <!-- <thead> -->
     <tr>  <td>Autor</td>    <td>Ile książek</td>    </tr>
     <!-- </thead> -->
-    
+
     {% for row in stats %}
         <tr><td>{{row[0]}}</td><td>{{row[1]}}</td></tr>
     {% endfor %}
   </table>
-  
+
 </body>
 </html>
