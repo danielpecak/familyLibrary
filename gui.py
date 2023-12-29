@@ -15,7 +15,71 @@ FOOTER = """
 </body></html>
 """
 
+def check_book(bookID):
+    """
+    Checks if the book exists in the database. If exists, it checks if it was
+    anihilated or not.
+    """
+    conn = connection()
+    cur  = conn.cursor()
+    cur.execute("""
+    SELECT book.id, book.title, book.annihilated
+    FROM book
+    WHERE book.id="""+bookID+""";
+    """)
+    rows=cur.fetchall()
+    if not rows:
+        return 1, "The book never existed in the library."
+    if rows[0][2]==1:
+        return 1, "The book does not exist in the library anymore."
+        # TODO add title of the book in the message
+    return 0, 0
+
+
+def show_book(bookID):
+    """
+    Returns the information of a book, that will appear after scanning the QR
+    of a book with id `bookID`.
+    """
+    conn = connection()
+    cur  = conn.cursor()
+    cur.execute("""
+    SELECT book.title, author.first_name, author.last_name, people.first_name, people.last_name, borrowings.start_date, borrowings.end_date, julianday('now') - julianday(borrowings.start_date  )
+    FROM borrowings
+    INNER JOIN book ON borrowings.id_book=book.id
+    INNER JOIN people ON borrowings.id_people=people.id
+    INNER JOIN book_R_author ON book_R_author.id_book=book.id
+    INNER JOIN author ON book_R_author.id_author=author.id
+    WHERE book.id="""+bookID+"""
+    ORDER BY borrowings.id DESC;
+    """)
+    row=cur.fetchone()
+    # for row in rows:
+    #     print(row)
+    return row
+
+    cur.execute("""
+    SELECT book.id, book.title, author.first_name, author.last_name, people.first_name, people.last_name, borrowings.start_date, julianday('now') - julianday(borrowings.start_date  )
+    FROM borrowings
+    INNER JOIN book ON borrowings.id_book=book.id
+    INNER JOIN people ON borrowings.id_people=people.id
+    INNER JOIN book_R_author ON book_R_author.id_book=book.id
+    INNER JOIN author ON book_R_author.id_author=author.id
+    WHERE book.annihilated=0 AND  borrowings.end_date IS NULL AND
+    book.id="""+bookID+"""
+    ORDER BY people.last_name;
+    """)
+
+    # TODO: book is free to borrow
+    # TODO: book has been borrowed at DATE and is borrowed for XXX DAYS
+    conn.close()
+    return 0
+
 def show_books():
+    """
+    Returns the total number of books.
+    Then the whole list, and some stats of books.
+    """
     f = open('html_books.html','wb+')
     f.write(HEADER.encode())
     conn = connection()
@@ -183,7 +247,7 @@ def show_borrowed():
     f.close()
     return status, stats
 
-returnbook(3)
-
-show_books()
-show_borrowed()
+# returnbook(3)
+#
+# show_books()
+# show_borrowed()
