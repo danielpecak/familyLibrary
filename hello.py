@@ -6,6 +6,8 @@ import db, gui
 app = Flask(__name__)
 app.run(debug = True)
 
+
+
 @app.route('/')
 def hello_world():
     """Testing flask: part I."""
@@ -24,29 +26,28 @@ def hello_world():
 #     # user='asd'
 #     # return render_template('hello.html', name=user)
 
-@app.route('/book/<bookID>')
-def book(bookID):
-    """Shows the book website linked with QR on ex libris."""
-    # Checks if the book exists in the library database
-    error, msg = gui.check_book(bookID)
-    if error:
-        return render_template('bookError.html', message=msg)
-    row = gui.show_book(bookID)
-    title  = row[0]
-    author = row[1]+" "+row[2]
-    if len(row)==8:
-        startday = str(row[5])
-        noOfDays = gui.calcTime(row[7])
-        print(startday)
-        print(noOfDays)
-        status = None
-        if row[6]==None: #row[6]=end_date
-            return render_template('book.html', title=title, author=author,
-                    status=status, startday=startday, noOfDays=noOfDays)
 
-    status = "W biblioteczce: można wypożyczać."
-    return render_template('book.html', title=title, author=author,
-                           status=status, startday=None, noOfDays=None)
+
+def renderAndsave(func):
+    """Rendering website and saving html code."""
+    def inner(*args, **kwargs):
+        html = func(*args, **kwargs)
+        filename = "book{:04d}.html".format(int(kwargs['bookID']))
+        # print(filename)
+        text_file = open(filename, "w")
+        text_file.write(html)
+        text_file.close()
+        return(html)
+    return inner
+
+
+@app.route('/book/<bookID>')
+# @renderAndsave
+def bookbook(bookID):
+    return gui.book(bookID)
+
+
+
 
 @app.route('/books')
 def show_books():

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # Generating simple GUI
 from  db import *
+from flask import render_template
 
 HEADER = """<html>
 <head>
@@ -14,6 +15,32 @@ HEADER = """<html>
 FOOTER = """
 </body></html>
 """
+
+# def renderStatic(bookID):
+def book(bookID):
+    """Shows the book website linked with QR on ex libris."""
+    # Checks if the book exists in the library database
+    error, msg = check_book(bookID)
+    if error:
+        return render_template('bookError.html', message=msg)
+    row = show_book(bookID)
+    title  = row[0]
+    author = row[1]+" "+row[2]
+    if len(row)==8:
+        startday = str(row[5])
+        noOfDays = calcTime(row[7])
+        # print(startday)
+        # print(noOfDays)
+        status = None
+        if row[6]==None: #row[6]=end_date
+            return render_template('book.html', title=title, author=author,
+                    status=status, startday=startday, noOfDays=noOfDays)
+
+    status = "W biblioteczce: można wypożyczać."
+
+    return render_template('book.html', title=title, author=author,
+                           status=status, startday=None, noOfDays=None)
+
 
 def check_book(bookID):
     """
