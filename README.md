@@ -111,9 +111,9 @@ Workflow #4
 # **TODO** LIST
 - [ ] ex libris
  - [X] brain storming
- - [ ] pencil drafts
- - [ ] brain storming: choosing best
- - [ ] raw Inkscape version of best 3
+ - [ ] ~~pencil drafts~~
+ - [X] brain storming: choosing best
+ - [X] asking third party for graphics
  - [ ] final choice
 - [X] BiBTeX to SQL converter
  - [X] library for conversion (pybtex)
@@ -124,6 +124,8 @@ Workflow #4
  - [X] draft of generator
  - [X] use *qrcode* library in more sophisticated way
  - [X] function **generateQR(url_text,path/filename)**
+ - [ ] testing QR code sizes
+ - [ ] generating pdf file for printing QR codes
  - [ ] function **update_qrs(dir,?)** that reads all the qrs from *dir* and changes them to the desired new format (update links or change the size of qrs). Maybe update should be done based on database content
 - [ ] Database
  - [X] code the structure

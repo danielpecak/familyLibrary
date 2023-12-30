@@ -35,14 +35,18 @@ def book(bookID):
     title  = row[0]
     author = row[1]+" "+row[2]
     if len(row)==8:
+        startday = str(row[5])
+        noOfDays = gui.calcTime(row[7])
+        print(startday)
+        print(noOfDays)
+        status = None
         if row[6]==None: #row[6]=end_date
-            status = "wypożyczone od "+str(row[5])+", od "+str(round(row[7]))+"dni, wypożyczający: "+row[3]+" "+row[4][0]+'.'
             return render_template('book.html', title=title, author=author,
-                                   status=status)
+                    status=status, startday=startday, noOfDays=noOfDays)
 
     status = "W biblioteczce: można wypożyczać."
     return render_template('book.html', title=title, author=author,
-                           status=status)
+                           status=status, startday=None, noOfDays=None)
 
 @app.route('/books')
 def show_books():

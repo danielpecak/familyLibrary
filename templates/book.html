@@ -5,11 +5,15 @@
   <a href="/books">Books</a>      </br>
   <a href="/borrowed">Borrowed</a></br>
   </br>
-  <h3>Tytuł: {{ title }} </h3>
-  <h3>Autor: {{ author }} </h3>
-  <h3>Status: {{ status }} </h3>
-  <!-- <h3>Tytuł: {{ title }} </h3> -->
+  <h3>Książka z biblioteki rodu Pęcaków</h3>
+  <p><i>{{ title }} </i> <br></p>
+  <p>Autor: {{ author }} </p>
+  {% if status != None %}
+  <p>{{ status }} </p>
+  {%endif%}
 
-
+  {% if (startday != None) and  (noOfDays != None)%}
+  <p>Data wypożyczenia: {{startday}} ({{noOfDays}})</p>
+  {% endif %}
 </body>
 </html>

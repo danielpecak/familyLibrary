@@ -49,7 +49,7 @@ def show_book(bookID):
     WHERE id_book="""+bookID+""";
     """)
     everBorrowed=cur.fetchone()
-    if everBorrowed==None: #never borrowed
+    if everBorrowed==None: #never borrowed but present in library
         cur.execute("""
         SELECT book.title, author.first_name, author.last_name
         FROM book
@@ -157,6 +157,10 @@ def show_books():
     return noofbooks, status, stats
 
 def calcTime(ddays):
+    """
+    ddays: number (float) of days
+    returns string of time with best unit: days/months/years
+    """
     # TODO form
     days=int(ddays)
     # print(ddays)
@@ -178,8 +182,8 @@ def calcTime(ddays):
         form="tygodni" if days>=5*7 else "tygodnie"
         return "%s %s temu"%(days/7,form)
     else:
-        return "%s d temu"%(days,)
         return "%s dni temu"%(days,)
+        return "%s d temu"%(days,)
 
 
 
@@ -189,7 +193,7 @@ def show_borrowed():
     conn = connection()
     cur  = conn.cursor()
     cur.execute("""
-    SELECT book.title, author.first_name, author.last_name, people.first_name, people.last_name, borrowings.start_date, julianday('now') - julianday(borrowings.start_date  )
+    SELECT book.id, book.title, author.first_name, author.last_name, people.first_name, people.last_name, borrowings.start_date, julianday('now') - julianday(borrowings.start_date  )
     FROM borrowings
     INNER JOIN book ON borrowings.id_book=book.id
     INNER JOIN people ON borrowings.id_people=people.id
@@ -205,13 +209,14 @@ def show_borrowed():
     for r in rows:
         # print(r)
         f.write(b"<tr>")
-        title=r[0].encode()
-        author=r[1].encode()+b" "+r[2].encode()
-        borrower=r[3].encode()+b" "+r[4].encode()
+        title=r[1].encode()
+        author=r[2].encode()+b" "+r[3].encode()
+        borrower=r[4].encode()+b" "+r[5].encode()
         # print(title,author,borrower)
-        m=("<td class='booktitle'>%s</td><td>%s</td><td>%s</td><td>%s</td>"%(title,author,borrower,calcTime(r[6])))
+        m=("<td class='booktitle'>%s</td><td>%s</td><td>%s</td><td>%s</td>"%(title,author,borrower,calcTime(r[7])))
         f.write(m.encode())
-        status.append((r[0],r[1]+" "+r[2],r[3]+" "+r[4],calcTime(r[6])))
+        print((r[0],r[1],r[2]+" "+r[3],r[4]+" "+r[5],calcTime(r[7])))
+        status.append((r[0],r[1],r[2]+" "+r[3],r[4]+" "+r[5],calcTime(r[7])))
         f.write(b"</tr>\n")
     f.write(b"</table></br>")
 
