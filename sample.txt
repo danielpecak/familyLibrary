@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+<head>  <link rel="stylesheet" href="/static/css.css"></head>
+<body>
+  <a href="/books">Books</a>      </br>
+  <a href="/borrowed">Borrowed</a></br>
+  </br>
+  <h3>Książka z biblioteki rodu Pęcaków</h3>
+  <p><i>Feynmana wykłady z fizyki T. 2 cz. 2 </i> <br></p>
+  <p>Autor: R.P. Feynman </p>
+  
+
+  
+  <p>Data wypożyczenia: 2023-12-25 (5 dni temu)</p>
+  
+</body>
+</html>

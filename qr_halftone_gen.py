@@ -23,21 +23,54 @@ import sys
 #
 # im2 = im.resize((93,93), Image.Resampling.LANCZOS)
 # im2.save('image_93x93.png')
-MESSAGE="https://danielpecak.github.io/lib.html#danielpecak.github.io/lib.html#"
+from pyqart import QArtist, QrHalftonePrinter, QrImagePrinter, QrPainter
 
-def generateQR(MESSAGE,filename,version=None):
+QR_VERSION = 10
+POINT_PIXEL = 10
+pathfile = 'graph/logoOwlMini.png'
+
+artist = QArtist('http://www.nankai.edu.cn/', pathfile, QR_VERSION)
+painter = QrPainter('http://www.nankai.edu.cn/', QR_VERSION)
+artist_data_only = QArtist('http://www.nankai.edu.cn/', pathfile,
+                           QR_VERSION, only_data=True)
+
+# normal
+QrImagePrinter.print(painter, path='normal.png', point_width=POINT_PIXEL)
+# Halftone
+QrHalftonePrinter.print(painter, path='halftone.png', img=pathfile,
+                        point_width=POINT_PIXEL, colorful=False)
+# Halftone colorful
+QrHalftonePrinter.print(painter, path='halftone-color.png', img=pathfile,
+                        point_width=POINT_PIXEL)
+# Halftone pixel
+QrHalftonePrinter.print(painter, path='halftone-pixel.png', img=pathfile,
+                        point_width=POINT_PIXEL, colorful=False,
+                        pixelization=True)
+# QArt
+QrImagePrinter.print(artist, path='qart.png', point_width=POINT_PIXEL)
+# QArt data only
+QrImagePrinter.print(artist_data_only, path='qart-data-only.png',
+                     point_width=POINT_PIXEL)
+# HalfArt
+QrHalftonePrinter.print(artist, path='halfart.png', point_width=POINT_PIXEL)
+# HalfArt data only
+QrHalftonePrinter.print(artist_data_only, path='halfart-data-only.png',
+                        point_width=POINT_PIXEL)
+
+
+def generateQR(MESSAGE,filename):
     """
 Generates QR code with MESSAGE message and saves it at FILENAME.
     """
     qr = qrcode.QRCode(
-    version=version,
+    version=4,
     error_correction=qrcode.constants.ERROR_CORRECT_H,
-    box_size=20,
+    box_size=10,
     border=2,
     )
     qr.add_data(MESSAGE)
-    qr.make(fit=None)
-    img = qr.make_image(fill_color="black", back_color="white")
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="white", back_color="black")
     # Load the background template image
     background_image = Image.open("graph/big.png")
 
@@ -50,31 +83,6 @@ Generates QR code with MESSAGE message and saves it at FILENAME.
 
     # Save the new image as a PNG file
     background_image.save(filename)
-    img.save(filename+"_pure")
-
-
-def testingQRs():
-    """
-    Generates an array of QR codes with different version
-    and with different sizes
-    """
-    # TODO: version: 10,14,18,22,26,30,34
-    # TODO: size [mm]: 9,12,15,18,21,24,27,30
-    for ver in [5,6,7,8,9]:
-        filename = 'testing2/'+str(ver)+'.pdf'
-        print(filename)
-        generateQR(MESSAGE,filename,version=ver)
-    pass
-
-def onePDFwithQRs():
-    """
-    Glue together QRs into one pdf file for printing.
-    """
-    pass
-
-testingQRs()
-
-sys.exit()
 
 
 def update():
@@ -84,12 +92,12 @@ Function goes throug all the books in database and generates new qr codes.
     pass
 
 
-
+MESSAGE="https://danielpecak.github.io/lib.html#"
 
 # img = qr.make_image(fill_color="white", back_color="black")
 # type(img)  # qrcode.image.pil.PilImage
 # img.save("some_file.png")
-for i in range(1):
+for i in range(2):
     code = MESSAGE+str(i)
-    filename = 'graph/'+str(i).zfill(3)+'.pdf'
+    filename = 'graph/'+str(i).zfill(3)+'.png'
     generateQR(code,filename)

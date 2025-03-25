@@ -39,45 +39,13 @@ To setup the database:
 
 
 ## Symbol
-Ex Libris Symbol
+Ex Libris Symbol: decided to be a steampunk owl with QR code and caption "Ex libris of Pęcak family". The size will be 6x6cm with 2x2cm QR code. It will be printed on a sticker and stick to the back cover (Karo) or at the beginning (probably blank page) of the book.
+
 ### Form
 - full sticker
-- stamp & sticker
-- full sticker for the first page, a small stamp for the inside of the book
+- ~~stamp & sticker~~
+- ~~full sticker for the first page, a small stamp for the inside of the book~~
 
-### Outlook/thema
-- Daniel: physics symbol
- - Schroedinger cat
- - Dirac notation: <bra|ket>
- - atom symbol
- - Psi as a wavefunction
-- Karo:
- - bridge
- - metal construction
- - construction helmet
- - blueprint
- - crane
- - tools
-- animals?
-  - owl
-  - dog
-- family animals:
- - orcas
- - lions
- - orangutans
- - chimpanzies
- - elephants
- - penguins
-- something that represents Marta and Romek
- - ~~teddy bear~~
- - ~~smile~~
- - ~~rattle~~
- - ~~ponytail~~
-- general values
- - knowledge
- - books
- - environment
- - sensitivity
 
 ---
 
@@ -95,18 +63,23 @@ Workflow #1
 
 Workflow #2
 1. ~~Talk about the design with Karo~~
-2. Download vector graphics
-3. Make new graphics that are needed or when the licensing is not good for me
+2. ~~Download vector graphics: make tests~~
+3. ~~Talk with a designer~~
 4. First draft of ex-libris
-5. Second draft of ex-libris
+5. Tests for printing and QR code
+6. Second draft/final version of ex-libris
 
 Workflow #3
 1. QR generator function in python
+2. function for embedding QR code into graphics
+3. generating an A4 page of sticker ready to print
 
 Workflow #4
 1. Website look
+2. Look for nice CSS styles
+3. generate an up-to-date websites for QR codes
 
- ---
+---
 
 # **TODO** LIST
 - [ ] ex libris
@@ -114,6 +87,7 @@ Workflow #4
  - [ ] ~~pencil drafts~~
  - [X] brain storming: choosing best
  - [X] asking third party for graphics
+ - [X] size testing
  - [ ] final choice
 - [X] BiBTeX to SQL converter
  - [X] library for conversion (pybtex)
@@ -124,7 +98,7 @@ Workflow #4
  - [X] draft of generator
  - [X] use *qrcode* library in more sophisticated way
  - [X] function **generateQR(url_text,path/filename)**
- - [ ] testing QR code sizes
+ - [X] testing QR code sizes
  - [ ] generating pdf file for printing QR codes
  - [ ] function **update_qrs(dir,?)** that reads all the qrs from *dir* and changes them to the desired new format (update links or change the size of qrs). Maybe update should be done based on database content
 - [ ] Database
